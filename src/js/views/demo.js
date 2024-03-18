@@ -6,38 +6,88 @@ import { Context } from "../store/appContext";
 import "../../styles/demo.css";
 
 export const Demo = () => {
-	const { store, actions } = useContext(Context);
 
-	return (
-		<div className="container">
-			<ul className="list-group">
-				{store.demo.map((item, index) => {
-					return (
-						<li
-							key={index}
-							className="list-group-item d-flex justify-content-between"
-							style={{ background: item.background }}>
-							<Link to={"/single/" + index}>
-								<span>Link to: {item.title}</span>
-							</Link>
-							{// Conditional render example
-							// Check to see if the background is orange, if so, display the message
-							item.background === "orange" ? (
-								<p style={{ color: item.initial }}>
-									Check store/flux.js scroll to the actions to see the code
-								</p>
-							) : null}
-							<button className="btn btn-success" onClick={() => actions.changeColor(index, "orange")}>
-								Change Color
-							</button>
-						</li>
-					);
-				})}
-			</ul>
-			<br />
-			<Link to="/">
-				<button className="btn btn-primary">Back home</button>
-			</Link>
-		</div>
-	);
+	const [contact, setContact] = useState({
+		"address": "",
+		"agenda_slug": "clisdermar",
+		"email": "",
+		"full_name": "",
+		"phone": ""
+
+	})
+
+	const submit = async (event)=>{
+		event.preventDefault()
+		try{
+
+			const response= await fetch('https://playground.4geeks.com/apis/fake/contact/', {
+				method: "POST",
+				body: JSON.stringify(contact),
+				headers: {
+				  "Content-Type": "application/json"
+				}
+			 })
+           
+				if(response.ok){
+
+					const data = await response.json();
+					console.log(data);
+					setContact({
+					   "address": "",
+					   "agenda_slug": "clisdermar",
+					   "email": "",
+					   "full_name": "",
+					   "phone": ""
+			   
+				   })
+				   alert('Contacto agregado exitosamente');
+				}
+				
+			
+		}catch(error){
+			console.error(error);
+		}
+
+	}
+	
+
+	useEffect(()=>{
+      console.log('El Contacto ha cambiado:', contact);
+	 
+  
+	},[contact])
+	
+
+	return <div className="body">
+
+				<form className="formu" onSubmit={submit}>
+		    	   <h2>Add a New Contact</h2> 
+
+				   <div className="inp">
+					   <laber for = "name">Full Name</laber>
+					   <input type="text"  value={contact.full_name} onChange={(event)=> setContact({...contact, full_name: event.target.value })} name="name" id="name" placeholder="Full Name"/>
+
+					   <laber for = "email">Email</laber>
+					   <input type="text" value={contact.email} onChange={(event)=> setContact({...contact, email: event.target.value })} name="email" id="Email" placeholder="Email"/>
+
+					   <laber for = "phone">Phone</laber>
+					   <input type="text" value={contact.phone} onChange={(event)=> setContact({...contact, phone: event.target.value })} name="phone" id="Phone" placeholder="Phone"/>
+					   
+					   <laber for = "adress">Adress</laber>
+					   <input type="text" value={contact.address} onChange={(event)=> setContact({...contact, address: event.target.value })} name="adress" id="adress" placeholder="Enter Adress"/>
+
+					   <div className="form-txt">
+					      <Link to=""> Terminos y Condiciones</Link>                 
+					   </div>
+					   
+					     <input class="btn" type="submit" value = "Save"/>
+						 <Link to="/" className="back"> Or get back to Contact</Link>  
+					
+				   </div>
+
+
+				</form>
+
+
+	</div>;
 };
