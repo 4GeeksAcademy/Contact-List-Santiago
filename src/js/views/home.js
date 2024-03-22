@@ -1,42 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import {Context} from "../store/appContext.js"
 import "../../styles/home.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPen, faEnvelope, faPhone, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
 export const Home = () => {
-    const [contacts, setContacts] = useState([])
-
-    const infContact = async () => {
-        try {
-            const response = await fetch('https://playground.4geeks.com/apis/fake/contact/agenda/clisdermar')
-            const data = await response.json()
-            setContacts(data)
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
+    const {store, actions} = useContext(Context)
     useEffect(() => {
-        infContact()
+        actions.infContact()
     }, [])
 
-    const sendDeleteContact = async (id) => {
-        try {
-            const response = await fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`, { method: "DELETE" });
-            if (response.ok) {
-                // Eliminar el contacto del array con filter porque si no el .map se queda renderizando y da error
-                setContacts(prevContacts => prevContacts.filter(contact => contact.id !== id));
-                console.log("Contacto eliminado exitosamente");
-            } else {
-                console.error(`Error al eliminar el contacto: ${response.status} - ${response.statusText}`);
-            }
-        } catch (error) {
-            console.error("Error al enviar la solicitud DELETE:", error);
-        }
-    }
-
     return (
-        contacts.map((contact) => {
+        store.contacts.map((contact) => {
             return (
                 <div className="fatherCard container" key={contact.id}>
                     <div className="cardHome">
@@ -51,7 +26,7 @@ export const Home = () => {
                         </div>
                         <div className="cardButton">
                             <button className="btnCard" ><FontAwesomeIcon icon={faPen} size="lg" style={{ color: "#000000", }} /></button>
-                            <button className="btnCard" onClick={() => sendDeleteContact(contact.id)}><FontAwesomeIcon icon={faTrash} size="lg" style={{ color: "#000000", }} /></button>
+                            <button className="btnCard" onClick={() => actions.sendDeleteContact(contact.id)}><FontAwesomeIcon icon={faTrash} size="lg" style={{ color: "#000000", }} /></button>
                         </div>
                     </div>
                 </div>

@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useActionData } from "react-router-dom";
 
 import { Context } from "../store/appContext";
 
 import "../../styles/demo.css";
 
 export const Demo = () => {
+	const {store, actions} = useContext(Context)
 
 	const [contact, setContact] = useState({
 		"address": "",
@@ -18,39 +19,18 @@ export const Demo = () => {
 
 	const submit = async (event)=>{
 		event.preventDefault()
-		try{
-
-			const response= await fetch('https://playground.4geeks.com/apis/fake/contact/', {
-				method: "POST",
-				body: JSON.stringify(contact),
-				headers: {
-				  "Content-Type": "application/json"
-				}
-			 })
-           
-				if(response.ok){
-
-					const data = await response.json();
-					console.log(data);
-					setContact({
-					   "address": "",
-					   "agenda_slug": "clisdermar",
-					   "email": "",
-					   "full_name": "",
-					   "phone": ""
-			   
-				   })
-				   alert('Contacto agregado exitosamente');
-				}
-				
-			
-		}catch(error){
-			console.error(error);
-		}
-
+		actions.addContact(contact)
+		setContact({
+			"address": "",
+			"agenda_slug": "clisdermar",
+			"email": "",
+			"full_name": "",
+			"phone": ""
+	
+		})
+	   
 	}
 	
-
 	useEffect(()=>{
       console.log('El Contacto ha cambiado:', contact);
 	 
