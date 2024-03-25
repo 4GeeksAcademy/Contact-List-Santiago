@@ -1,3 +1,4 @@
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -13,7 +14,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			contacts:[]
+			contacts:[],
+			//Guardo en store para poder llevarlo con la navegator el contactos para editar
+			editContact:null
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -75,8 +78,45 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error al enviar la solicitud DELETE:", error);
 				}
 			},
-	
-		
+
+			sendEditContact: async (editContact, id) => {
+				//send http request with newFormData
+				try{
+					const response = await fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`, {
+						method: "PUT",
+						body: JSON.stringify(editContact),
+						headers: {
+						"Content-Type": "application/json"
+						}
+			  		})
+					const data = await response.json()
+					console.log(data)
+					//if response successful, empty edit obj {}
+					if(response.ok){
+						setStore({editContact: null})
+						alert('Contacto actualizado exitosamente');
+						return true
+					}
+					
+				}	
+				catch(error){
+					console.error(error)
+				}
+			},
+
+			editMode: (id) => {
+				//get store to work with
+				const store = getStore()
+				//get only the contactToEdit, find returns value of first to meet condition
+
+				const contactToEdit = store.contacts.find((contact) => {
+					return contact.id === id
+				})
+				//modify the store accordingly, if contactToEdit filled with truth value
+				if(contactToEdit){
+					setStore({editContact: contactToEdit})
+				}
+			},
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();

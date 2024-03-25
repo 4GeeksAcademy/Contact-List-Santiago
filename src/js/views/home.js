@@ -1,22 +1,29 @@
 import React, { useState, useEffect, useContext } from "react";
-import {Context} from "../store/appContext.js"
+import { Context } from "../store/appContext.js";
 import "../../styles/home.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPen, faEnvelope, faPhone, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { Link } from "react-router-dom";
 
 export const Home = () => {
-    const {store, actions} = useContext(Context)
+    const { store, actions } = useContext(Context);
+    const [contactToDelete, setContactToDelete] = useState(null);
+
     useEffect(() => {
-        actions.infContact()
-    }, [])
+        actions.infContact();
+    }, []);
+
+    const handleDeleteContact = (contactId) => {
+        setContactToDelete(contactId);
+    };
 
     return (
-        store.contacts.map((contact) => {
-            return (
+        <>
+            {store.contacts.map((contact) => (
                 <div className="fatherCard container" key={contact.id}>
                     <div className="cardHome">
                         <div style={{ margin: "15px" }} >
-                            <img className="cardImg" src="https://estaticos.elcolombiano.com/binrepository/780x565/0c0/780d565/none/11101/NFGU/cristiano-ronaldo-ig-personal_43991124_20231215212229.jpg" alt="cristiano" />
+                            <img className="cardImg" src="https://cdn.pixabay.com/photo/2016/03/31/18/31/contact-1294428_1280.png" alt="cristiano" />
                         </div>
                         <div className="cardInf">
                             <h4 style={{ marginTop: "10px" }}>{contact.full_name}</h4>
@@ -25,12 +32,38 @@ export const Home = () => {
                             <p><FontAwesomeIcon icon={faEnvelope} style={{ marginRight: "8px" }} />{contact.email}</p>
                         </div>
                         <div className="cardButton">
-                            <button className="btnCard" ><FontAwesomeIcon icon={faPen} size="lg" style={{ color: "#000000", }} /></button>
-                            <button className="btnCard" onClick={() => actions.sendDeleteContact(contact.id)}><FontAwesomeIcon icon={faTrash} size="lg" style={{ color: "#000000", }} /></button>
+                            <Link to="/demo">
+                                <button className="btnCard" onClick={() => actions.editMode(contact.id)}>
+                                    <FontAwesomeIcon icon={faPen} size="lg" style={{ color: "#000000" }} />
+                                </button>
+                            </Link>
+                            <button className="btnCard" onClick={() => handleDeleteContact(contact.id)} data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <FontAwesomeIcon icon={faTrash} size="lg" style={{ color: "#000000" }} />
+                            </button>
                         </div>
                     </div>
                 </div>
-            )
-        })
-    )
+            ))}
+
+            {/* Modal para eliminar contacto */}
+            {contactToDelete !== null && (
+                <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h1 className="modal-title fs-5" id="exampleModalLabel">Are you sure you want to delete this contact?</h1>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                                If you delete, you will lose the contact forever.
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn coolBtn" data-bs-dismiss="modal" onClick={() => actions.sendDeleteContact(contactToDelete)}>Delete Contact</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
+    );
 };
