@@ -10,15 +10,44 @@ export const Home = () => {
     const [contactToDelete, setContactToDelete] = useState(null);
 
     useEffect(() => {
-        actions.infContact();
+        //actions.infContact();
+        actions.getAgendas();
     }, []);
 
     const handleDeleteContact = (contactId) => {
         setContactToDelete(contactId);
     };
+const getOrCreate= async(e)=>{
+    try{
+        await actions.getAgendaByName(e.target.value)
 
+    }catch(error){
+        console.error(error)
+    }
+
+}
     return (
         <>
+        <div>
+            <h3>
+                Listas Existentes
+            </h3>
+            {
+                store.agendas.map((item,index)=>{
+                    return(
+                        <div key={index}> 
+                           <p>{item.slug}</p> 
+                        </div>
+                    )
+            
+
+                })
+            }
+        </div>
+        <div>
+            <h3>Busca o crea tu agenda</h3>
+            <input onChange={getOrCreate}></input>
+        </div>
             {store.contacts.map((contact) => (
                 <div className="fatherCard container" key={contact.id}>
                     <div className="cardHome">

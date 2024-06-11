@@ -15,7 +15,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             ],
             contacts: [],
-            editContact: null
+            editContact: null,
+            agendas:[]
         },
         actions: {
             exampleFunction: () => {
@@ -28,7 +29,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             infContact: async () => {
                 try {
-                    const response = await fetch('https://playground.4geeks.com/apis/fake/contact/agenda/clisdermar');
+                    const response = await fetch('https://playground.4geeks.com/apis/fake/contact/agenda/santidiaz');
                     if (response.ok) {
                         const data = await response.json();
                         setStore({ contacts: data });
@@ -39,9 +40,23 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.error("Error fetching contacts:", error);
                 }
             },
+            getAgendas: async () => {
+                try {
+                    const response = await fetch('https://playground.4geeks.com/contact/agendas?offset=0&limit=100');
+                    if (response.ok) {
+                        const data = await response.json();
+                        let store = getStore()
+                        setStore({ ...store,agendas: data.agendas });
+                    } else {
+                        console.error(`Error fetching contacts: ${response.status} - ${response.statusText}`);
+                    }
+                } catch (error) {
+                    console.error("Error fetching aegdnas:", error);
+                }
+            },
             addContact: async (contact) => {
                 try {
-                    const response = await fetch('https://playground.4geeks.com/apis/fake/contact/', {
+                    const response = await fetch('https://playground.4geeks.com/apis/fake/contact', {
                         method: "POST",
                         body: JSON.stringify(contact),
                         headers: {
@@ -61,6 +76,19 @@ const getState = ({ getStore, getActions, setStore }) => {
                     }
                 } catch (error) {
                     console.error("Error adding contact:", error);
+                }
+            },
+            getAgendaByName:async () => {
+                try {
+                    const response = await fetch('https://playground.4geeks.com/apis/fake/contact/agenda/santidiaz');
+                    if (response.ok) {
+                        const data = await response.json();
+                        setStore({ contacts: data });
+                    } else {
+                        console.error(`Error fetching contacts: ${response.status} - ${response.statusText}`);
+                    }
+                } catch (error) {
+                    console.error("Error fetching contacts:", error);
                 }
             },
             sendDeleteContact: async (id) => {
