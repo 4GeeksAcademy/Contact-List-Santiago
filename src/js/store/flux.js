@@ -29,7 +29,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             infContact: async () => {
                 try {
-                    const response = await fetch('https://playground.4geeks.com/apis/fake/contact/agenda/santidiaz');
+                    const response = await fetch('https://playground.4geeks.com/contact/agendas/SantiDiaz');
                     if (response.ok) {
                         const data = await response.json();
                         setStore({ contacts: data });
@@ -56,7 +56,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             addContact: async (contact) => {
                 try {
-                    const response = await fetch('https://playground.4geeks.com/apis/fake/contact', {
+                    const response = await fetch('https://playground.4geeks.com/contact', {
                         method: "POST",
                         body: JSON.stringify(contact),
                         headers: {
@@ -80,7 +80,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             getAgendaByName:async () => {
                 try {
-                    const response = await fetch('https://playground.4geeks.com/apis/fake/contact/agenda/santidiaz');
+                    const response = await fetch('https://playground.4geeks.com/contact/agendas/SantiDiaz');
                     if (response.ok) {
                         const data = await response.json();
                         setStore({ contacts: data });
@@ -94,7 +94,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             sendDeleteContact: async (id) => {
                 const store = getStore();
                 try {
-                    const response = await fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`, { method: "DELETE" });
+                    const response = await fetch(`https://playground.4geeks.com/contact/${id}`, { method: "DELETE" });
                     if (response.ok) {
                         const newContacts = store.contacts.filter(contact => contact.id !== id);
                         setStore({ contacts: newContacts });
@@ -108,7 +108,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             sendEditContact: async (editContact, id) => {
                 try {
-                    const response = await fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`, {
+                    const response = await fetch(`https://playground.4geeks.com/contact/${id}`, {
                         method: "PUT",
                         body: JSON.stringify(editContact),
                         headers: {

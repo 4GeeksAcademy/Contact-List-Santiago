@@ -13,7 +13,7 @@ export const Demo = () => {
         address: store.editContact ? store.editContact.address : "",
         phone: store.editContact ? store.editContact.phone : "",
         email: store.editContact ? store.editContact.email : "",
-        agenda_slug: "clisdermar"
+        agenda_slug: "SantiDiaz"
     });
 
     useEffect(() => {
