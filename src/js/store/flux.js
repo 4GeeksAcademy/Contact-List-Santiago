@@ -42,7 +42,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             getAgendas: async () => {
                 try {
-                    const response = await fetch('https://playground.4geeks.com/contact/agendas?offset=0&limit=100');
+                    const response = await fetch('https://playground.4geeks.com/contact/agendas');
                     if (response.ok) {
                         const data = await response.json();
                         let store = getStore()
@@ -56,7 +56,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             addContact: async (contact) => {
                 try {
-                    const response = await fetch('https://playground.4geeks.com/contact', {
+                    const response = await fetch('https://playground.4geeks.com/contact/agendas/SantiDiaz/contacts', {
                         method: "POST",
                         body: JSON.stringify(contact),
                         headers: {
@@ -80,7 +80,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             getAgendaByName:async () => {
                 try {
-                    const response = await fetch('https://playground.4geeks.com/contact/agendas/SantiDiaz');
+                    const response = await fetch('https://playground.4geeks.com/contact/agendas/SantiDiaz/contacts');
                     if (response.ok) {
                         const data = await response.json();
                         setStore({ contacts: data });

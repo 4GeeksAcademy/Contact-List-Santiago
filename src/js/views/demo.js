@@ -23,7 +23,7 @@ export const Demo = () => {
                 address: "",
                 phone: "",
                 email: "",
-                agenda_slug: "clisdermar"
+                agenda_slug: "SantiDiaz"
             });
         }
     }, [store.editContact]);
@@ -41,7 +41,7 @@ export const Demo = () => {
         }
         setContact({
             address: "",
-            agenda_slug: "clisdermar",
+            agenda_slug: "SantiDiaz",
             email: "",
             full_name: "",
             phone: ""
@@ -54,7 +54,7 @@ export const Demo = () => {
                 <h2>Add a New Contact</h2>
                 <div className="inp">
                     <label htmlFor="name">Full Name</label>
-                    <input type="text" value={contact.full_name} onChange={(event) => setContact({ ...contact, full_name: event.target.value })} name="name" id="name" placeholder="Full Name" />
+                    <input type="text" value={contact.full_name} onChange={(event) => setContact({ ...contact, name: event.target.value })} name="name" id="name" placeholder="Full Name" />
 
                     <label htmlFor="email">Email</label>
                     <input type="text" value={contact.email} onChange={(event) => setContact({ ...contact, email: event.target.value })} name="email" id="email" placeholder="Email" />
