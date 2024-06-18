@@ -9,21 +9,21 @@ export const Demo = () => {
     const { store, actions } = useContext(Context);
 
     const [contact, setContact] = useState({
-        full_name: store.editContact ? store.editContact.full_name : "",
+        name: store.editContact ? store.editContact.name : "",
         address: store.editContact ? store.editContact.address : "",
         phone: store.editContact ? store.editContact.phone : "",
         email: store.editContact ? store.editContact.email : "",
-        agenda_slug: "SantiDiaz"
+        
     });
 
     useEffect(() => {
         if (!store.editContact) {
             setContact({
-                full_name: "",
+                name: "",
                 address: "",
                 phone: "",
                 email: "",
-                agenda_slug: "SantiDiaz"
+               
             });
         }
     }, [store.editContact]);
@@ -41,9 +41,8 @@ export const Demo = () => {
         }
         setContact({
             address: "",
-            agenda_slug: "SantiDiaz",
             email: "",
-            full_name: "",
+            name: "",
             phone: ""
         });
     };
@@ -53,8 +52,8 @@ export const Demo = () => {
             <form className="formu" onSubmit={submit}>
                 <h2>Add a New Contact</h2>
                 <div className="inp">
-                    <label htmlFor="name">Full Name</label>
-                    <input type="text" value={contact.full_name} onChange={(event) => setContact({ ...contact, name: event.target.value })} name="name" id="name" placeholder="Full Name" />
+                    <label htmlFor="name"> Full Name</label>
+                    <input type="text" value={contact.name} onChange={(event) => setContact({ ...contact, name: event.target.value })} name="name" id="name" placeholder="Full Name" />
 
                     <label htmlFor="email">Email</label>
                     <input type="text" value={contact.email} onChange={(event) => setContact({ ...contact, email: event.target.value })} name="email" id="email" placeholder="Email" />

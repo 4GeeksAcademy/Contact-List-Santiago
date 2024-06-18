@@ -9,53 +9,25 @@ export const Home = () => {
     const { store, actions } = useContext(Context);
     const [contactToDelete, setContactToDelete] = useState(null);
 
-    useEffect(() => {
-        //actions.infContact();
-        actions.getAgendas();
-    }, []);
-
+    
     const handleDeleteContact = (contactId) => {
         setContactToDelete(contactId);
     };
-const getOrCreate= async(e)=>{
-    try{
-        await actions.getAgendaByName(e.target.value)
 
-    }catch(error){
-        console.error(error)
-    }
 
-}
+
     return (
         <>
-        <div>
-            <h3>
-                Listas Existentes
-            </h3>
-            {
-                store.agendas.map((item,index)=>{
-                    return(
-                        <div key={index}> 
-                           <p>{item.slug}</p> 
-                        </div>
-                    )
-            
-
-                })
-            }
-        </div>
-        <div>
-            <h3>Busca o crea tu agenda</h3>
-            <input onChange={getOrCreate}></input>
-        </div>
-            {store.contacts.map((contact) => (
+        
+       
+            {store.contacts && store.contacts.length > 0 && store.contacts.map((contact) => (
                 <div className="fatherCard container" key={contact.id}>
                     <div className="cardHome">
                         <div style={{ margin: "15px" }} >
                             <img className="cardImg" src="https://cdn.pixabay.com/photo/2016/03/31/18/31/contact-1294428_1280.png" alt="cristiano" />
                         </div>
                         <div className="cardInf">
-                            <h4 style={{ marginTop: "10px" }}>{contact.full_name}</h4>
+                            <h4 style={{ marginTop: "10px" }}>{contact.name}</h4>
                             <p> <FontAwesomeIcon icon={faLocationDot} style={{ marginRight: "8px" }} />{contact.address}</p>
                             <p> <FontAwesomeIcon icon={faPhone} style={{ marginRight: "8px" }} />{contact.phone}</p>
                             <p><FontAwesomeIcon icon={faEnvelope} style={{ marginRight: "8px" }} />{contact.email}</p>
